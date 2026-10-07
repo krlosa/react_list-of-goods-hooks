@@ -15,19 +15,25 @@ export const goodsFromServer = [
   'Garlic',
 ];
 
+enum SortType {
+  DEFAULT = '',
+  ALPHABET = 'alphabet',
+  LENGTH = 'length',
+}
+
 export const App: React.FC = () => {
   const [goods, setGoods] = useState([...goodsFromServer]);
-  const [sortType, setSortType] = useState('');
+  const [sortType, setSortType] = useState(SortType.DEFAULT);
   const [isReversed, setIsReversed] = useState(false);
 
   const resetGoods = () => {
     setGoods([...goodsFromServer]);
-    setSortType('');
+    setSortType(SortType.DEFAULT);
     setIsReversed(false);
   };
 
   const handleAlphabetSort = () => {
-    if (sortType === 'alphabet' && !isReversed) {
+    if (sortType === SortType.ALPHABET && !isReversed) {
       resetGoods();
 
       return;
@@ -36,11 +42,11 @@ export const App: React.FC = () => {
     const sorted = [...goodsFromServer].sort((a, b) => a.localeCompare(b));
 
     setGoods(isReversed ? [...sorted].reverse() : sorted);
-    setSortType('alphabet');
+    setSortType(SortType.ALPHABET);
   };
 
   const handleLengthSort = () => {
-    if (sortType === 'length' && !isReversed) {
+    if (sortType === SortType.LENGTH && !isReversed) {
       resetGoods();
 
       return;
@@ -49,7 +55,7 @@ export const App: React.FC = () => {
     const sorted = [...goodsFromServer].sort((a, b) => a.length - b.length);
 
     setGoods(isReversed ? [...sorted].reverse() : sorted);
-    setSortType('length');
+    setSortType(SortType.LENGTH);
   };
 
   const handleReverse = () => {
@@ -63,7 +69,7 @@ export const App: React.FC = () => {
         <button
           onClick={handleAlphabetSort}
           type="button"
-          className={`button is-info ${sortType === 'alphabet' ? '' : 'is-light'}`}
+          className={`button is-info ${sortType === SortType.ALPHABET ? '' : 'is-light'}`}
         >
           Sort alphabetically
         </button>
@@ -71,7 +77,7 @@ export const App: React.FC = () => {
         <button
           onClick={handleLengthSort}
           type="button"
-          className={`button is-success ${sortType === 'length' ? '' : 'is-light'}`}
+          className={`button is-success ${sortType === SortType.LENGTH ? '' : 'is-light'}`}
         >
           Sort by length
         </button>
